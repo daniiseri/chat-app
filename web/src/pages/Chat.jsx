@@ -47,7 +47,7 @@ export function Chat() {
   }
 
   return (
-    <div className="bg-pink-950 h-screen text-zinc-50 flex flex-col px-2 py-1 mx-auto w-1/2">
+    <div className="bg-pink-950 h-screen text-zinc-50 flex flex-col px-2 py-1 mx-auto lg:w-1/2">
       <div className="flex-1">
         <ul>
           {
