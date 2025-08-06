@@ -6,17 +6,18 @@ import { User } from "./models/users.js";
 import { routes } from "./routes/index.js";
 import { roomRepositories } from "./repositories/rooms.js";
 import { userRepositories } from "./repositories/users.js";
+import { env } from "./config/env.js";
 
 const app = express()
 app.use(cors({
-  origin: 'http://localhost:5173'
+  origin: env.CORS_ORIGIN
 }))
 app.use(routes)
 
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://localhost:5173'
+    origin: env.CORS_ORIGIN
   }
 });
 
