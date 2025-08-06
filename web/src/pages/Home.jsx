@@ -14,7 +14,7 @@ export function Home() {
       setCountUsers(count)
     })
 
-    fetch('http://localhost:3000/rooms', {
+    fetch(`${env.API_URL}/rooms`, {
       method: 'GET',
       headers: {
         'Contet-type': 'application/json'
@@ -25,7 +25,7 @@ export function Home() {
   }, [])
 
   async function createRoom() {
-    const response = await fetch('http://localhost:3000/rooms', {
+    const response = await fetch(`${env.API_URL}/rooms`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'

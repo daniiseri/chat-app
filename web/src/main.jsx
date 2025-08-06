@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     path: "chat/:roomId",
     element: <Chat />,
     loader: async ({ params }) => {
-      const response = await fetch(`http://localhost:3000/rooms/${params.roomId}`, {
+      const response = await fetch(`${env.API_URL}/rooms/${params.roomId}`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json'
