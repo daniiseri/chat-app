@@ -7,6 +7,7 @@ import {
 } from "react-router";
 import { Home } from './pages/Home';
 import { Chat } from './pages/Chat';
+import { env } from './config/env';
 
 const router = createBrowserRouter([
   {

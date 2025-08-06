@@ -2,6 +2,7 @@ import { Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { socket } from '../libs/socket'
 import { NavLink } from 'react-router'
+import { env } from '../config/env'
 
 export function Home() {
   const [rooms, setRooms] = useState([])
