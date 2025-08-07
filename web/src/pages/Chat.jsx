@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useLoaderData, useNavigate } from "react-router"
 import { SendHorizonal } from 'lucide-react'
 import { socket } from "../libs/socket"
@@ -22,6 +22,7 @@ export function Chat() {
   const navigate = useNavigate()
   const [messages, setMessages] = useState([])
   const [value, setValue] = useState('')
+  const ref = useRef(null)
 
   useEffect(() => {
     if (data?.error?.status === 404) {
@@ -34,6 +35,12 @@ export function Chat() {
       setMessages((prevState) => [...prevState, { value, date, recipient: true }])
     })
   }, [])
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight - ref.current.offsetHeight
+    }
+  }, [messages])
 
   function onChange(e) {
     setValue(e.target.value)
@@ -48,7 +55,7 @@ export function Chat() {
 
   return (
     <div className="bg-pink-950 h-screen text-zinc-50 flex flex-col px-2 py-1 mx-auto lg:w-1/2">
-      <div className="flex-1">
+      <div ref={ref} className="flex-1 overflow-auto">
         <ul>
           {
             messages?.map(({ value, recipient, date }, index) => (
