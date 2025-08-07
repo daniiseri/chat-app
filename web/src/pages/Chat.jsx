@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react"
 import { useLoaderData, useNavigate } from "react-router"
-import { SendHorizonal } from 'lucide-react'
+import { SendHorizonal, SmilePlus } from 'lucide-react'
 import { socket } from "../libs/socket"
 import { tv } from 'tailwind-variants';
+import EmojiPicker from 'emoji-picker-react'
 
 const messageVariants = tv({
   base: 'shadow w-3/4 mt-4 px-3 py-2 rounded-b-full bg-pink-900 relative',
@@ -22,6 +23,7 @@ export function Chat() {
   const navigate = useNavigate()
   const [messages, setMessages] = useState([])
   const [value, setValue] = useState('')
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const ref = useRef(null)
 
   useEffect(() => {
@@ -47,10 +49,20 @@ export function Chat() {
   }
 
   function onSubmit() {
+    if (!value.length) return
+
     const date = new Date()
     setMessages(prevState => [...prevState, { value, recipient: false, date }])
     socket.emit('messages', { roomId: data.roomId, message: { value, date } })
     setValue('')
+  }
+
+  function onEmojiClick({ emoji }) {
+    setValue(prevState => prevState + emoji)
+  }
+
+  function toggleShowEmojiPicker() {
+    setShowEmojiPicker(!showEmojiPicker)
   }
 
   return (
@@ -70,12 +82,23 @@ export function Chat() {
         </ul>
       </div>
 
-      <div className="flex gap-2 px-3 py-2">
-        <input onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            onSubmit()
-          }
-        }} type="text" value={value} onChange={onChange} className="rounded-lg bg-pink-900 shadow flex-1 px-1" />
+      <div className="flex gap-2 px-3 py-2 relative">
+        <SmilePlus className="cursor-pointer" onClick={toggleShowEmojiPicker} />
+        <input
+          onFocus={() => setShowEmojiPicker(false)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              onSubmit()
+            }
+          }}
+          type="text"
+          value={value}
+          onChange={onChange}
+          className="rounded-lg bg-pink-900 shadow flex-1 px-1"
+        />
+        <div data-hidden={!showEmojiPicker} className="absolute -translate-y-full data-[hidden=true]:hidden">
+          <EmojiPicker onEmojiClick={onEmojiClick} />
+        </div>
         <SendHorizonal onClick={onSubmit} />
       </div>
     </div>
